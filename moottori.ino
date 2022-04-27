@@ -2,10 +2,10 @@
 int motorPin = 10;
 int pingPin = 8;
 int echoPin = 9;
-int timeButtonPin = 6;
+int timeButtonPin = 2;
 int ledPin = 7;
-int onOffPin = 3;
-int buzzerPin = 5;
+int onOffPin = 4;
+int buzzerPin = 3;
 int timeAlarm = 0;
 bool start = false;
 bool alarm = false;
@@ -15,7 +15,7 @@ void setup() {
   pinMode(motorPin, OUTPUT);
   pinMode(pingPin, OUTPUT);
   pinMode(echoPin, INPUT);
-  pinMode(timeButtonPin, INPUT);
+  pinMode(timeButtonPin, INPUT_PULLUP);
   pinMode(ledPin, OUTPUT);
   pinMode(onOffPin, INPUT_PULLUP);
   pinMode(buzzerPin, OUTPUT);
@@ -33,10 +33,11 @@ void loop() {
   delay(100);
   
   //snooze button doubles as 
-  if (digitalRead(timeButtonPin) == HIGH) {
+  if (digitalRead(timeButtonPin) == LOW) {
+    delay(100);
     timeAlarm = timeAlarm + 1;
     ledFlash();
-    delay(500);
+    delay(100);
   }
   //when switch is on the timer starts
   if (digitalRead(onOffPin) == LOW) {
@@ -47,20 +48,20 @@ void loop() {
     }
   }
   
-
+  if (digitalRead(timeButtonPin) == LOW) {
+      noTone(buzzerPin);
+  } 
+  
   if (cm > 20 && start) {
     delay(timeAlarm * 1000);
-    alarm = true;
+    tone(buzzerPin,500);
     analogWrite(motorPin, 255);
     timeAlarm = 0;
-    tone(buzzerPin, 500);
   } else if (cm < 20) {
-    analogWrite(motorPin, 0);
-    start = false;
-  } else if (digitalRead(timeButtonPin) == HIGH) {
-    alarm = false;
-    noTone(buzzerPin);
+      analogWrite(motorPin, 0);
+      start = false;
   }
+  
 }
 
 long microsecondsToCentimeters(long microseconds) {
