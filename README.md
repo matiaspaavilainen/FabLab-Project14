@@ -1,5 +1,5 @@
 # FabLab-Project14
 Principles of Digital Fabrication Course project
 
-alarmclock car that runs away 
+Alarmclock car that runs away when the alarm goes off
 
