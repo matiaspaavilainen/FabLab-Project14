@@ -1,4 +1,3 @@
-
 int motorPin = 10;
 int pingPin = 8;
 int echoPin = 9;
@@ -8,8 +7,6 @@ int onOffPin = 4;
 int buzzerPin = 3;
 int timeAlarm = 0;
 bool start = false;
-bool alarm = false;
-
 
 void setup() {
   pinMode(motorPin, OUTPUT);
@@ -22,6 +19,7 @@ void setup() {
 }
 
 void loop() {
+  //ultrasonic sensor setup
   long cm, duration;
   digitalWrite(pingPin, LOW);
   delayMicroseconds(2);
@@ -32,13 +30,14 @@ void loop() {
   cm = microsecondsToCentimeters(duration);
   delay(100);
   
-  //snooze button doubles as 
+  //time button
   if (digitalRead(timeButtonPin) == LOW) {
     delay(100);
     timeAlarm = timeAlarm + 1;
     ledFlash();
     delay(100);
   }
+  
   //when switch is on the timer starts
   if (digitalRead(onOffPin) == LOW) {
     start = true;
@@ -48,10 +47,12 @@ void loop() {
     }
   }
   
+  //stops beeping
   if (digitalRead(timeButtonPin) == LOW) {
       noTone(buzzerPin);
   } 
   
+  //stopping the car
   if (cm > 20 && start) {
     delay(timeAlarm * 1000);
     tone(buzzerPin,500);
@@ -63,11 +64,12 @@ void loop() {
   }
   
 }
-
+//distance calculation
 long microsecondsToCentimeters(long microseconds) {
   return microseconds / 29 / 2;
 }
 
+//led flash function
 void ledFlash() {
   digitalWrite(ledPin, HIGH);
   delay(500);
