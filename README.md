@@ -1,5 +1,5 @@
 # FabLab-Project14
 Principles of Digital Fabrication Course project
 
-Alarmclock car that runs away when the alarm goes off
+Alarmclock car that starts driving when the alarm goes off. Created with arduino.
 
